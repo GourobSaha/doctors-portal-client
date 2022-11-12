@@ -10,7 +10,7 @@ const Banner3 = () => {
             <div className="hero">
                 <div className="hero-content p-0 flex-col lg:flex-row">
                     <img src={doctorImg} alt='doctor' className="-mt-36 hidden md:block lg:w-1/2 rounded-lg" />
-                    <div>
+                    <div className='p-3 md:p-0'>
                         <h3 className="text-2xl font-semibold text-primary">Appointment</h3>
                         <h1 className="text-4xl font-bold my-6 text-white">Make an appointment Today</h1>
                         <p className="py-6 text-white">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsumis that it has a more-or-less normal distribution of letters,as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page</p>
