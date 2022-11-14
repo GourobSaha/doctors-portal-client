@@ -1,33 +1,43 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthProvider';
 
-const Login = () => {
+const SignUp = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
 
-    const { signIn } = useContext(AuthContext);
-    const location = useLocation();
-    const navigate = useNavigate();
+    const { createUser, updateUser } = useContext(AuthContext);
 
-    const from = location.state?.from?.pathname || '/';
-
-    const handleLogin = data => {
+    const handleSignUp = data => {
         console.log(data);
-        signIn(data.email, data.password)
+        createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                navigate(from, { replace: true });
+                console.log(data.name);
+                const userInfo = {
+                    displayName: data.name
+                }
+                updateUser(userInfo)
+                    .then(() => { })
+                    .catch(err => console.log(err));
             })
             .catch(error => console.error(error))
+
     }
 
     return (
         <div className='my-10 md:my-20 flex justify-center items-center'>
             <div className='w-96 p-7 shadow-xl rounded-2xl'>
-                <h2 className='text-xl text-center mb-3'>Login</h2>
-                <form onSubmit={handleSubmit(handleLogin)}>
+                <h2 className='text-xl text-center mb-3'>Sign Up</h2>
+                <form onSubmit={handleSubmit(handleSignUp)}>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Name</span>
+                        </label>
+                        <input type="txt" className="input input-bordered w-full" {...register("name", { required: 'Name is Required' })} />
+                        {errors.name && <p className='text-red-600 text-sm'>{errors.name?.message}</p>}
+                    </div>
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text">Email</span>
@@ -41,15 +51,11 @@ const Login = () => {
                         </label>
                         <input type="password" className="input input-bordered w-full" {...register("password", { required: 'Password is Required' })} />
                         {errors.password && <p className='text-red-600 text-sm'>{errors.password?.message}</p>}
-                        <label className="label">
-                            <span className="label-text">Forget Password?</span>
-                        </label>
-
                     </div>
-                    <input className='btn btn-accent w-full' value="Login" type="submit" />
+                    <input className='btn btn-accent w-full mt-5' value="Sign Up" type="submit" />
                 </form>
-                <p className='my-2 text-center text-sm'>New to Doctors Portal? <Link className='
-                text-primary' to='/signup'>Create New Account</Link></p>
+                <p className='my-2 text-center text-sm'>Already have an account? <Link className='
+                text-primary' to='/login'>Please Login</Link></p>
                 <div className="divider">OR</div>
                 <button className='btn btn-accent btn-outline w-full'>CONTINUE WITH GOOGLE</button>
             </div>
@@ -57,4 +63,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default SignUp;
